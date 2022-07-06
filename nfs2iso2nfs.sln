@@ -5,7 +5,9 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nfs2iso2nfs", "nfs2iso2nfs\nfs2iso2nfs.csproj", "{7EF4AE15-575E-425F-A245-F80EDBF5B6CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{A1B9334D-65F9-47BF-8576-05E05FD4DBC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{A1B9334D-65F9-47BF-8576-05E05FD4DBC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{126C4236-83D3-4985-BA28-F5C7A601D639}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A1B9334D-65F9-47BF-8576-05E05FD4DBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B9334D-65F9-47BF-8576-05E05FD4DBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B9334D-65F9-47BF-8576-05E05FD4DBC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{126C4236-83D3-4985-BA28-F5C7A601D639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{126C4236-83D3-4985-BA28-F5C7A601D639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{126C4236-83D3-4985-BA28-F5C7A601D639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{126C4236-83D3-4985-BA28-F5C7A601D639}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
