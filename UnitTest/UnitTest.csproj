@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ModelTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\nfs2iso2nfs\nfs2iso2nfs.csproj" />
   </ItemGroup>
 
