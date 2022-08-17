@@ -1,9 +1,9 @@
 ﻿using nfs2iso2nfs.Helpers;
 using nfs2iso2nfs.Models;
 
-namespace ConsoleApp
+namespace nfs2iso2nfs
 {
-    class Program
+    public class Depreciated
     {
         public static Patch Patch = new("");
         public static Nfs Nfs = new();
