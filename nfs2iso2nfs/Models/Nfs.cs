@@ -18,6 +18,7 @@ namespace nfs2iso2nfs.Models
         public int Size = 0xFA00000;
         public byte[] Key { get; set; } = Array.Empty<byte>();
         public byte[] CommonKey { get; set; } = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        public string NfsOutputDirectory { get; set; } = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar;
         public void CombineNFSFiles()
         {
             using var nfs = new BinaryWriter(File.OpenWrite(Hif));
@@ -175,7 +176,7 @@ namespace nfs2iso2nfs.Models
             do
             {
                 Console.WriteLine("Building hif_" + string.Format("{0:D6}", i) + ".nfs...");
-                var nfsTemp = new BinaryWriter(File.OpenWrite(Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "hif_" + string.Format("{0:D6}", i) + ".nfs"));
+                var nfsTemp = new BinaryWriter(File.OpenWrite(NfsOutputDirectory + "hif_" + string.Format("{0:D6}", i) + ".nfs"));
                 nfsTemp.Write(nfs.ReadBytes(size > Size ? Size : (int)size));
                 size -= Size;
                 i++;
