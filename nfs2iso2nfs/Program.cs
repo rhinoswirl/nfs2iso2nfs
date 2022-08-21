@@ -16,7 +16,7 @@ namespace nfs2iso2nfs
         public static void Main(string[] args)
         {
             Nfs = new Nfs();
-            Patch = new Patch("");
+            Patch = new Patch(".." + Path.DirectorySeparatorChar + "code" + Path.DirectorySeparatorChar + "fw.img");
             if (!CheckArgs(args))
                 return;
 
