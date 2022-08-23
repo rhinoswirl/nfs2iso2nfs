@@ -1,5 +1,6 @@
 ﻿using nfs2iso2nfs.Helpers;
 using nfs2iso2nfs.Models;
+using System.Globalization;
 
 namespace ConsoleApp
 {
@@ -16,7 +17,7 @@ namespace ConsoleApp
         public static void Main(string[] args)
         {
             Nfs = new Nfs();
-            Patch = new Patch("");
+            Patch = new Patch(".." + Path.DirectorySeparatorChar + "code" + Path.DirectorySeparatorChar + "fw.img");
             if (!CheckArgs(args))
                 return;
 
@@ -162,6 +163,9 @@ namespace ConsoleApp
                     case "-nocc":
                         Patch.NoCC = true;
                         break;
+                    case "-output":
+                        Nfs.NfsOutputDirectory = args[i + 1];
+                        break;
 
                     case "-help":
                         Console.WriteLine("+++++ NFS2ISO2NFS v0.6 +++++");
@@ -182,6 +186,7 @@ namespace ConsoleApp
                         Console.WriteLine("-passthrough    Allow homebrew to keep using normal wiimotes with gamepad enabled");
                         Console.WriteLine("-instantcc      Report emulated Classic Controller at the very first check");
                         Console.WriteLine("-nocc           Report that no Classic Controller is connected");
+                        Console.WriteLine("-output         Location of where the NFS files will be outputted to. DEFAULT: code" + Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar);
                         Console.WriteLine("-help           Print this text.");
                         return false;
                     default:
@@ -261,6 +266,20 @@ namespace ConsoleApp
             }
             return true;
         }
+        public static byte[] ConvertHexStringToByteArray(string hexString)
+        {
+            if (hexString.Length % 2 != 0)
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The binary key cannot have an odd number of digits: {0}", hexString));
+
+            var data = new byte[hexString.Length / 2];
+            for (int index = 0; index < data.Length; index++)
+            {
+                var byteValue = hexString.Substring(index * 2, 2);
+                data[index] = byte.Parse(byteValue, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            }
+
+            return data;
+        }
 #pragma warning disable CS8601 // Possible null reference assignment.
 #pragma warning disable CS8603 // Possible null reference return.
         private static byte[] GetKey()
@@ -269,9 +288,7 @@ namespace ConsoleApp
             if (!File.Exists(keyFile))
             {
                 Console.WriteLine("ERROR: Could not find AES key file! Exiting...");
-
                 return null;
-
             }
             var key = KeyHelper.GetKey(keyFile);
             if (key == null)
@@ -286,17 +303,25 @@ namespace ConsoleApp
                 Console.WriteLine("Wii common key not found in source code. Looking for file...");
                 if (!File.Exists(wiiKeyFile))
                 {
-                    Console.WriteLine("ERROR: Could not find Wii common key file! Exiting...");
-                    return null;
+                    Nfs.CommonKey = ConvertHexStringToByteArray("ebe42a225e8593e448d9c5457381aaf7");
+                    if (Nfs.CommonKey[0] != 0xeb)
+                    {
+                        Console.WriteLine("ERROR: Could not find Wii common key file! Exiting...");
+                        return null;
+                    }
+                    else
+                        Console.WriteLine("Wii common key has been found.");
                 }
-
-                Nfs.CommonKey = KeyHelper.GetKey(wiiKeyFile);
-                if (Nfs.CommonKey == null)
+                else
                 {
-                    Console.WriteLine("ERROR: Wii common key file has wrong file size! Exiting...");
-                    return null;
+                    Nfs.CommonKey = KeyHelper.GetKey(wiiKeyFile);
+                    if (Nfs.CommonKey == null)
+                    {
+                        Console.WriteLine("ERROR: Wii common key file has wrong file size! Exiting...");
+                        return null;
+                    }
+                    Console.WriteLine("Wii Common Key file found!");
                 }
-                Console.WriteLine("Wii Common Key file found!");
             }
             else
                 Console.WriteLine("Wii common key found in source code!");
